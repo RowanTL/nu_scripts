@@ -21,14 +21,16 @@ def "pass email" [
   # need to see if multiple emails found
   let $email_len = ($email_line | length)
   if $email_len == 0 {
-    return "No email found! Nothing Copied"
+    "No email found!" | clip copy --show | print
+    return 
   }
   if $email_len > 1 {
-    return "More than one email found! Nothing Copied!"
+    "More than one email found!" | clip copy --show | print
+    return 
   }
 
   # 7 is the magic number to remove the "login: " or "email: " characters
-  let email = $email_line | str substring 7..($email_line.0 | str length )
+  let email = $email_line | str substring 7..($email_line.0 | str length)
 
   # experimental clipboard feature in nushell 0.111.0
   $email | to text -n | clip copy
